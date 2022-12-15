@@ -1,0 +1,19 @@
+{
+  "name": "server",
+  "version": "0.0.1",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon app.js",
+    "start-mongoDB": "cd /Users/malthegram/mongoDb/mongodb-macos-x86_64-6.0.3/bin/ && ./mongod --dbpath ./data/"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "cors": "^2.8.5",
+    "helmet": "^6.0.0",
+    "mongodb": "^4.12.1",
+    "dotenv": "^16.0.3",
+    "concurrently": "^7.6.0"
+  }
+}

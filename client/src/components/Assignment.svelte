@@ -1,40 +1,23 @@
 <script>
-    import {Overlay} from "svelte-materialify";
-    import AssignmentDetails from "./AssignmentDetails.svelte";
+    import {Link} from "svelte-navigator";
     export let array;
-    export let title = ""
-    let active = false
-    const handleOverlay = () => {
-        active = !active
-    }
+    export let title
 
-    export const test = (e) => {
-        console.log(e.target.id);
-    }
 
 </script>
 <div class="flex-column">
     <div class="row-item">
         <h4>{title}</h4>
         {#each array as value}
-            <div on:click={handleOverlay} id={value._id} class="description">
+            <div id={value._id} class="description" draggable="false">
+                <!--TODO: Make it draggable, on drag redifine status -->
                 <p>{value.status}</p>
                 <p>{value.name}</p>
                 <p>{value._id}</p>
+                <Link class="link-item" to="{value._id}">See more</Link>
             </div>
         {/each}
     </div>
-    <Overlay
-            {active}
-            color="black"
-            on:click={handleOverlay}
-            opacity="0.20"
-    >
-        <!-- TODO: Insert Assignment details here. Create new component for that-->
-        <AssignmentDetails
-                id={123}
-        />
-    </Overlay>
 </div>
 
 <style lang="scss">
@@ -46,8 +29,6 @@
   .flex-column {
     text-align: center;
     background-color: rgba(10, 100, 255, 0.55);
-    width: 15%;
-    height: 100%;
   }
 
   .description {
@@ -60,6 +41,19 @@
     p {
       text-transform: capitalize;
       overflow-wrap: break-word;
+    }
+
+    :global(.link-item) {
+      text-decoration: none;
+      color: inherit;
+      padding: 0.25em 1em;
+      background-color: green;
+      border-radius: 15%;
+
+      &:hover {
+        text-decoration: underline;
+        color: blue;
+      }
     }
   }
 </style>

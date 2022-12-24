@@ -2,13 +2,17 @@ import express from "express"
 import db from "./database/database.js";
 import cors from "cors"
 import {ObjectId} from "mongodb";
+import bodyParser from "body-parser";
 
 const app = express()
 app.use(cors({
     credentials: true,
     origin: true
 }))
-const PORT = process.env.PORT || 8080
+app.use(express.urlencoded({extended: true}))
+app.use(express.json())
+app.use(bodyParser.urlencoded({extended: false}))
+app.use(bodyParser.json())
 
 
 app.get("/", (req, res) => {
@@ -47,12 +51,12 @@ app.get("/projects", async (req, res) => {
 })
 app.get("/projects/insertdummy", async (req, res) => {
     await db.projects.insertMany([
-        {name: "Pegasus", status: "open"},
-        {name: "Pegasus", status: "analysis"},
-        {name: "Pegasus", status: "backlog"},
-        {name: "Pegasus", status: "in progress"},
-        {name: "Pegasus", status: "ready for test"},
-        {name: "Pegasus", status: "ready for deploy"}
+        {name: "Pegasus 1", status: "open"},
+        {name: "Pegasus 2", status: "analysis"},
+        {name: "Pegasus 3", status: "backlog"},
+        {name: "Pegasus 4", status: "in progress"},
+        {name: "Pegasus 5", status: "ready for test"},
+        {name: "Pegasus 6", status: "ready for deploy"}
     ])
     res.send({data: "inserted dummy data"})
 })
@@ -63,7 +67,33 @@ app.get("/projects/:id", async (req, res) => {
     res.send({data: assignmentData})
 })
 
+app.post("/projects", async (req, res) => {
+    const project = req.body
+    await db.projects.insertOne(project)
+    res.status(200).send({data: "Successfully added new project"})
+})
 
+app.patch("/projects", async (req, res) => {
+    console.log("Patch request sent")
+    const projectToUpdate = req.body.id
+    const projectStatus = req.body.status
+    console.log(req.body)
+    let o_id = new ObjectId(projectToUpdate)
+
+    console.log(projectToUpdate, projectStatus)
+
+    await db.projects.updateOne(
+        {_id: o_id},
+        {
+            $set: {status: projectStatus}
+        })
+
+    res.status(200).send({data: "Successfully updated project"})
+
+})
+
+
+const PORT = process.env.PORT || 8080
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
 })

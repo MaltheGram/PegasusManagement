@@ -65,9 +65,10 @@
 
 <style lang="scss">
   .flex-container {
-    display: flex;
-    justify-content: space-evenly;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
     height: 100%;
+
 
   }
 </style>

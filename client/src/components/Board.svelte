@@ -1,6 +1,6 @@
 <script>
     import {BASE_URL} from "../stores/globals.js"
-    import AssignmentColums from "./AssignmentColums.svelte";
+    import AssignmentColum from "./AssignmentColum.svelte";
 
     let assignments = []
     let openStatusArray = []
@@ -12,7 +12,7 @@
 
 
     const fetchProjects = async () => {
-        fetch(`${$BASE_URL}/projects`, {
+        fetch(`${$BASE_URL}/api/projects`, {
             method: "GET",
             credentials: "include"
         })
@@ -31,30 +31,28 @@
     fetchProjects()
 
 
-    let active = false
-
 </script>
 
 <div class="grid-container">
-    <AssignmentColums
+    <AssignmentColum
             array={openStatusArray}
             title="open"
     />
-    <AssignmentColums
+    <AssignmentColum
             array={analysisStatusArray}
             title="analysis"/>
-    <AssignmentColums
+    <AssignmentColum
             array={backlogStatusArray}
             title="backlog"/>
-    <AssignmentColums
+    <AssignmentColum
             array={inProgressArray}
             title="in progress"
     />
-    <AssignmentColums
+    <AssignmentColum
             array={readyForTestArray}
             title="ready for test"
     />
-    <AssignmentColums
+    <AssignmentColum
             array={readyForDeployArray}
             title="ready for deploy"
     />
@@ -64,7 +62,5 @@
   .grid-container {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
-    height: 100%;
-    background-color: rgba(10, 100, 255, 0.55);
   }
 </style>

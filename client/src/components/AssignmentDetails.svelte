@@ -17,7 +17,7 @@
 
     const initialize = async () => {
         id = location.pathname.split("/")[2]
-        fetch(`${$BASE_URL}/projects/${id}`, {
+        fetch(`${$BASE_URL}/api/projects/${id}`, {
             method: "GET",
             credentials: "include",
             headers: {

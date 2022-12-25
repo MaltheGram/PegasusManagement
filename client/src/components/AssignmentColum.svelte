@@ -10,9 +10,9 @@
     {#each array as value}
         <div class="description" draggable="false">
             <!--TODO: Make it draggable, on drag redifine status -->
-            <p>{value.status}</p>
-            <p>{value.name}</p>
-            <p>{value._id}</p>
+            <p><span>Status:</span> {value.status}</p>
+            <p><span>Name:</span> {value.name}</p>
+            <p><span>ID:</span> {value._id}</p>
             <Link class="link-item" to="{value._id}">See more</Link>
         </div>
     {/each}
@@ -25,6 +25,7 @@
   }
 
   .grid-column {
+    margin-top: 2.25em;
     text-align: center;
     height: 100vh;
 
@@ -40,6 +41,11 @@
     p {
       text-transform: capitalize;
       overflow-wrap: break-word;
+      line-height: 1.75em;
+
+      span {
+        font-weight: 900;
+      }
     }
 
     :global(.link-item) {

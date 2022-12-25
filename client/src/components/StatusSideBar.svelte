@@ -7,7 +7,7 @@
     export let loggedTime
 
     const changeStatus = async () => {
-        await fetch(`${$BASE_URL}/projects`, {
+        await fetch(`${$BASE_URL}/api/projects`, {
             method: "PATCH",
             credentials: "include",
             headers: {
@@ -21,8 +21,8 @@
         location.reload()
     }
     const logWork = async () => {
-        await fetch(`${$BASE_URL}/projects`, {
-            method: "PATCH",
+        await fetch(`${$BASE_URL}/api/projects/test`, {
+            method: "PUT",
             credentials: "include",
             headers: {
                 "Content-Type": "application/json"
@@ -48,11 +48,11 @@
         </select>
         <button type="submit">Change project status</button>
     </form>
-    <form on:submit|preventDefault={logWork}>
+    <!--<form on:submit|preventDefault={logWork}>
         <h2>Log time</h2>
-        <input bind:value={loggedTime} placeholder="Format: 1h 5m 55s" type="text">
+        <input bind:value={loggedTime} placeholder="Format: 1h 5m 55s" type="number">
         <button type="submit">Log work done</button>
-    </form>
+    </form>-->
 </div>
 
 
@@ -73,7 +73,8 @@
       label,
       input {
         text-align: center;
-        width: 100%;
+        width: 70%;
+        margin: auto;
         display: block;
         background-color: transparent;
       }

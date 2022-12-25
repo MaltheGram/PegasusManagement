@@ -1,7 +1,6 @@
 <script>
     import {BASE_URL} from "../stores/globals.js"
-    import {MaterialApp} from "svelte-materialify";
-    import Assignment from "./Assignment.svelte";
+    import AssignmentColums from "./AssignmentColums.svelte";
 
     let assignments = []
     let openStatusArray = []
@@ -36,39 +35,36 @@
 
 </script>
 
-<MaterialApp>
-    <div class="flex-container">
-        <Assignment
-                array={openStatusArray}
-                title="open"
-        />
-        <Assignment
-                array={analysisStatusArray}
-                title="analysis"/>
-        <Assignment
-                array={backlogStatusArray}
-                title="backlog"/>
-        <Assignment
-                array={inProgressArray}
-                title="in progress"
-        />
-        <Assignment
-                array={readyForTestArray}
-                title="ready for test"
-        />
-        <Assignment
-                array={readyForDeployArray}
-                title="ready for deploy"
-        />
-    </div>
-</MaterialApp>
+<div class="grid-container">
+    <AssignmentColums
+            array={openStatusArray}
+            title="open"
+    />
+    <AssignmentColums
+            array={analysisStatusArray}
+            title="analysis"/>
+    <AssignmentColums
+            array={backlogStatusArray}
+            title="backlog"/>
+    <AssignmentColums
+            array={inProgressArray}
+            title="in progress"
+    />
+    <AssignmentColums
+            array={readyForTestArray}
+            title="ready for test"
+    />
+    <AssignmentColums
+            array={readyForDeployArray}
+            title="ready for deploy"
+    />
+</div>
 
 <style lang="scss">
-  .flex-container {
+  .grid-container {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
     height: 100%;
-
-
+    background-color: rgba(10, 100, 255, 0.55);
   }
 </style>

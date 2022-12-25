@@ -51,12 +51,12 @@ app.get("/projects", async (req, res) => {
 })
 app.get("/projects/insertdummy", async (req, res) => {
     await db.projects.insertMany([
-        {name: "Pegasus 1", status: "open"},
-        {name: "Pegasus 2", status: "analysis"},
-        {name: "Pegasus 3", status: "backlog"},
-        {name: "Pegasus 4", status: "in progress"},
-        {name: "Pegasus 5", status: "ready for test"},
-        {name: "Pegasus 6", status: "ready for deploy"}
+        {name: "Pegasus", status: "open"},
+        {name: "Pegasus", status: "analysis"},
+        {name: "Pegasus", status: "backlog"},
+        {name: "Pegasus", status: "in progress"},
+        {name: "Pegasus", status: "ready for test"},
+        {name: "Pegasus", status: "ready for deploy"}
     ])
     res.send({data: "inserted dummy data"})
 })
@@ -77,6 +77,7 @@ app.patch("/projects", async (req, res) => {
     console.log("Patch request sent")
     const projectToUpdate = req.body.id
     const projectStatus = req.body.status
+    const loggedTime = req.body.loggedTime
     console.log(req.body)
     let o_id = new ObjectId(projectToUpdate)
 
@@ -89,7 +90,6 @@ app.patch("/projects", async (req, res) => {
         })
 
     res.status(200).send({data: "Successfully updated project"})
-
 })
 
 

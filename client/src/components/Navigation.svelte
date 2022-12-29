@@ -1,16 +1,57 @@
 <script>
 
     import {Link, Router} from "svelte-navigator";
+    import {BASE_URL} from "../stores/globals.js";
+    import {onMount} from "svelte";
+
+    let loggedIn = false
+    let userName = "Not logged in"
+
+    export const userStatus = () => {
+        fetch(`${$BASE_URL}/api/session`, {
+            method: "GET",
+            credentials: "include"
+        })
+            .then(res => res.json())
+            .then((data) => {
+                if (data.data.isLoggedIn) {
+                    loggedIn = true
+                    userName = data.data.firstName + " " + data.data.lastName
+                }
+            })
+    }
+    const logOut = () => {
+        fetch(`${$BASE_URL}/api/sessiondestroy`, {
+            method: "GET",
+            credentials: "include"
+        })
+        setTimeout(() => {
+                location.reload()
+            }, 1000
+        )
+    }
+
+    onMount(
+        userStatus
+    )
+
 </script>
 
 <Router>
-    <nav>
-        <Link class="link" to="/">Home</Link>
-        <Link class="link" to="/projects">Projects</Link>
-        <Link class="link" to="/projects">Other 2</Link>
-        <Link class="link" to="/login">Login &#128100;</Link>
-    </nav>
-    <hr>
+    {#if loggedIn}
+        <nav>
+            <Link class="link" to="/">Home</Link>
+            <Link class="link" to="/projects">Projects</Link>
+            <Link class="link" to="">Welcome {userName}</Link>
+            <Link class="link" on:click={logOut} to="/">Logout</Link>
+        </nav>
+        <hr>
+    {:else }
+        <nav>
+            <Link class="link" to="/">Home</Link>
+            <Link class="link" to="/login">Login &#128100;</Link>
+        </nav>
+    {/if}
 </Router>
 
 

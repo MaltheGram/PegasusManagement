@@ -1,0 +1,25 @@
+.container {
+  margin: auto;
+  width: 25%;
+  text-align: center;
+
+  h1 {
+    margin: 1em 0;
+  }
+
+  input,
+  button {
+    width: 100%;
+    padding: 1em;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 0.7em;
+  }
+
+  button {
+    &:hover {
+      background-color: #cccccc;
+    }
+  }
+
+}

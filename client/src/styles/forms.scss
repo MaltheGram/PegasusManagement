@@ -16,6 +16,11 @@
     border-radius: 0.7em;
   }
 
+  textarea {
+    resize: none;
+    width: 100%;
+  }
+
   button {
     &:hover {
       background-color: #cccccc;

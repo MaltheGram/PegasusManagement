@@ -4,6 +4,8 @@
 
     let email = ""
     let password = ""
+    let statusCode
+
 
     const login = async () => {
         await fetch(`${$BASE_URL}/api/auth/login`, {
@@ -14,7 +16,13 @@
             body: JSON.stringify({email, password}),
             credentials: "include"
         })
-        location.reload()
+            .then(res => {
+                if (res.status === 200) {
+                    location.href = "/projects"
+                } else {
+                    toastr["info"]("Login failed")
+                }
+            })
     }
 
 
@@ -24,10 +32,11 @@
     <h1>Login</h1>
     <form on:submit|preventDefault={login}>
         <label for="email">Email</label>
-        <input bind:value={email} id="email" name="email" placeholder="Bob@mail.com" type="email">
+        <input bind:value={email} id="email" name="email" placeholder="Bob@mail.com" required type="email">
 
         <label for="password">Password</label>
         <input autocomplete="current-password" bind:value={password} id="password" name="password" placeholder="*******"
+               required
                type="password">
         <button type="submit">Login</button>
     </form>

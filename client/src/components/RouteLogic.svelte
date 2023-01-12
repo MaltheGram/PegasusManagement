@@ -4,6 +4,7 @@
     import AssignmentDetails from "./AssignmentDetails.svelte";
     import Login from "./auth/Login.svelte";
     import Signup from "./auth/Signup.svelte";
+    import CreateAssignment from "./CreateAssignment.svelte";
 </script>
 
 <Router>
@@ -22,6 +23,9 @@
     </Route>
     <Route path="/signup">
         <Signup/>
+    </Route>
+    <Route path="/create">
+        <CreateAssignment/>
     </Route>
 </Router>
 

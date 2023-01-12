@@ -1,10 +1,11 @@
 <script>
     import {Link} from "svelte-navigator";
-    export let array;
+    export let array
     export let title
 
 
 </script>
+
 <div class="grid-column">
     <h2>{title}</h2>
     {#each array as value}

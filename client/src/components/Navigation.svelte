@@ -1,13 +1,13 @@
 <script>
 
-    import {Link, Router} from "svelte-navigator";
-    import {BASE_URL} from "../stores/globals.js";
-    import {onMount} from "svelte";
+    import {Link, Router} from "svelte-navigator"
+    import {BASE_URL} from "../stores/globals.js"
+    import {onMount} from "svelte"
 
     let loggedIn = false
     let userName = "Not logged in"
 
-    export const userStatus = () => {
+    const userStatus = () => {
         fetch(`${$BASE_URL}/api/session`, {
             method: "GET",
             credentials: "include"
@@ -26,11 +26,10 @@
             credentials: "include"
         })
         setTimeout(() => {
-                location.reload()
-            }, 1000
-        )
+            location.reload()
+        }, 2000)
+        toastr["info"](`Goodbye ${userName}...⌛️`)
     }
-
     onMount(
         userStatus
     )
@@ -42,7 +41,8 @@
         <nav>
             <Link class="link" to="/">Home</Link>
             <Link class="link" to="/projects">Projects</Link>
-            <Link class="link" to="">Welcome {userName}</Link>
+            <!-- <Link class="link user" to="">Welcome {userName}</Link> -->
+            <Link class="link" to="/create">Create new</Link>
             <Link class="link" on:click={logOut} to="/">Logout</Link>
         </nav>
         <hr>
@@ -67,10 +67,9 @@
       font-size: 2.2em;
       text-decoration: none;
 
-      &:hover {
+      &:hover:not(.user) {
         text-decoration: underline;
       }
-
     }
   }
 

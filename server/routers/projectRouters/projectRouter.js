@@ -6,12 +6,12 @@ const router = Router()
 
 router.get("/api/projects", async (req, res) => {
     const findAllProjects = await db.projects.find().toArray()
-    const openStatusArray = await db.projects.find({status: "open"}).toArray()
-    const analysisStatusArray = await db.projects.find({status: "analysis"}).toArray()
-    const backlogStatusArray = await db.projects.find({status: "backlog"}).toArray()
-    const inProgressArray = await db.projects.find({status: "in progress"}).toArray()
-    const readyForTestStatusArray = await db.projects.find({status: "ready for test"}).toArray()
-    const readyForDeployStatusArray = await db.projects.find({status: "ready for deploy"}).toArray()
+    const openStatusArray = await db.projects.find({status: "Open"}).toArray()
+    const analysisStatusArray = await db.projects.find({status: "Analysis"}).toArray()
+    const backlogStatusArray = await db.projects.find({status: "Backlog"}).toArray()
+    const inProgressArray = await db.projects.find({status: "In Progress"}).toArray()
+    const readyForTestStatusArray = await db.projects.find({status: "Ready For Test"}).toArray()
+    const readyForDeployStatusArray = await db.projects.find({status: "Ready For Deploy"}).toArray()
 
     if (req.query.delete) {
         await db.projects.deleteMany({name: req.query.delete})
@@ -46,6 +46,9 @@ router.get("/api/projects/insertdummy", async (req, res) => {
     ])
     res.send({data: "inserted dummy data"})
 })
+/*                                      Dummy stuff for testing purpose                                              */
+/*__________________________________________________________________________________________________________________ */
+
 router.get("/api/projects/:id", async (req, res) => {
     const id = req.params.id
     let o_id = new ObjectId(id)
@@ -55,27 +58,44 @@ router.get("/api/projects/:id", async (req, res) => {
 
 router.post("/api/projects", async (req, res) => {
     const project = req.body
-    await db.projects.insertOne(project)
-    res.status(200).send({data: "Successfully added new project"})
+    project.status = "Open"
+
+    try {
+        await db.projects.insertOne(project)
+        res.status(200).send({data: "Successfully added new project"})
+
+    } catch (error) {
+        res.status(500)
+    }
 })
 
-router.patch("/api/projects", async (req, res) => {
-    console.log("Patch request sent")
-    const projectToUpdate = req.body.id
-    const projectStatus = req.body.status
-    const loggedTime = req.body.loggedTime
-    console.log(req.body)
-    let o_id = new ObjectId(projectToUpdate)
+router.patch("/api/projects/:id", async (req, res) => {
+    try {
+        const projectToUpdate = req.params.id
+        const project = req.body
+        let o_id = new ObjectId(projectToUpdate)
 
-    console.log(projectToUpdate, projectStatus)
+        await db.projects.updateOne(
+            {_id: o_id},
+            {
+                $set: project
+            })
+        res.status(200).send({data: "Successfully updated project"})
 
-    await db.projects.updateOne(
-        {_id: o_id},
-        {
-            $set: {status: projectStatus}
-        })
+    } catch (error) {
+        res.status(404).send({data: `${error}`})
+    }
 
-    res.status(200).send({data: "Successfully updated project"})
+
+})
+
+
+router.delete("/api/projects/:id", async (req, res) => {
+    const projectId = req.params.id
+    let o_id = new ObjectId(projectId)
+
+    await db.projects.deleteOne({_id: o_id})
+    res.status(200).send({data: `${o_id} was successfully deleted`})
 })
 
 

@@ -2,6 +2,7 @@
     import {BASE_URL} from "../stores/globals.js"
     import AssignmentColum from "./AssignmentColum.svelte";
 
+    // Props
     let assignments = []
     let openStatusArray = []
     let analysisStatusArray = []
@@ -25,7 +26,6 @@
                 inProgressArray = assignments[0].inProgressArray
                 readyForTestArray = assignments[0].readyForTestStatusArray
                 readyForDeployArray = assignments[0].readyForDeployStatusArray
-
             })
     }
     fetchProjects()

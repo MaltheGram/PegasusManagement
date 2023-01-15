@@ -16,7 +16,7 @@
             },
         })
             .then(res => res.json())
-            .then((data) => {
+            .then(data => {
                 allComments = data.data
             })
     }
@@ -30,13 +30,20 @@
             },
             body: JSON.stringify({commentTitle, commentContent, projectID})
         })
-            .then(res => {
-                if (res.status === 200) {
-                    toastr["success"](`Added new comment: ${commentTitle}`)
-                    setTimeout(() => {
-                        location.reload()
-                    }, 1200)
-                }
+            .then(res => res.json())
+            .then(data => {
+                allComments = [...allComments, data.data]
+            })
+    }
+
+    const deleteComment = async (id) => {
+        await fetch(`${$BASE_URL}/api/comments/${id}`, {
+            method: "DELETE",
+            credentials: "include",
+        })
+            .then(res => res.json())
+            .then(data => {
+                allComments = allComments.filter(comment => comment.id !== data.id)
             })
     }
 
@@ -63,11 +70,18 @@
     <div class="comment-container">
         {#each allComments as comment}
             <div class="comment">
-
-                <p>{comment.projectID}</p>
-                <p>{comment.commentTitle}</p>
-                <p>{comment.commentContent}</p>
+                <p>Title: {comment.commentTitle}</p>
+                <p>Content: {comment.commentContent}</p>
+                <p>Author: {comment.author}</p>
+                <p>Comment id: {comment._id}</p>
+                <div class="deletion">
+                    <h4>Delete comment?</h4>
+                    <button on:click={deleteComment(comment._id)}>
+                        <i class="fa fa-trash-o" style="font-size:48px;color:red"></i>
+                    </button>
+                </div>
             </div>
+
         {/each}
     </div>
 </div>
@@ -87,7 +101,43 @@
     text-align: center;
 
     .comment {
+      border: 2px solid black;
       margin: 2em 0;
+    }
+  }
+
+  .deletion {
+    button {
+      background-color: transparent;
+      border: none;
+
+      &:hover {
+        transform: scale(1.10);
+      }
+    }
+
+    &__yes {
+      background-color: red;
+      padding: 1.25em;
+      width: 33%;
+      border: none;
+      color: aliceblue;
+
+      &:hover {
+        transform: scale(1.10);
+      }
+    }
+
+    &__no {
+      background-color: green;
+      padding: 1.25em;
+      width: 33%;
+      border: none;
+      color: aliceblue;
+
+      &:hover {
+        transform: scale(1.10);
+      }
     }
   }
 

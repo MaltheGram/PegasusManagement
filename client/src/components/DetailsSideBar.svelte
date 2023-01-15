@@ -2,7 +2,6 @@
     import {BASE_URL} from "../stores/globals.js";
     import {onMount} from "svelte";
     import Modal from "./Modal.svelte"
-    import Chat from "./Chat.svelte";
 
 
     // Declared props
@@ -46,7 +45,11 @@
                 status: selectedStatus,
             })
         })
-        location.reload()
+            .then(res => res.json())
+            .then(data => {
+                assignmentStatus = data.data.project.status
+
+            })
     }
 
     const assignUser = async () => {
@@ -60,19 +63,13 @@
                 assignedUser: user
             })
         })
-            .then(res => {
-                if (res.status === 200) {
-                    toastr["success"](`${user} is now assigned to this assignment`)
-                    location.reload()
-                }
+            .then(res => res.json())
+            .then(data => {
+                assignedUser = data.data.project.assignedUser
             })
-
     }
 
     const logWork = async () => {
-        const stripped_time = loggedTime.split(":")
-
-
         await fetch(`${$BASE_URL}/api/projects/${id}`, {
             method: "PATCH",
             credentials: "include",
@@ -80,15 +77,12 @@
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                loggedTime: stripped_time
+                loggedTime: loggedTime
             })
         })
-            .then(res => {
-                if (res.status === 200) {
-                    toastr["success"](`Logged ${loggedTime}`)
-                    location.reload()
-
-                }
+            .then(res => res.json())
+            .then(data => {
+                spentTime = data.data.project.loggedTime
             })
     }
 
@@ -118,7 +112,7 @@
     <h1>Details</h1>
     <div>
         <p>Assigned user: {assignedUser}</p>
-        <p>Time spent: {spentTime[0]}h {spentTime[1]}m </p>
+        <p>Time spent: {spentTime} </p>
     </div>
     <form on:submit|preventDefault={changeStatus}>
         <h3>Current status: {assignmentStatus}</h3>
@@ -134,7 +128,7 @@
     <form on:submit|preventDefault={logWork}>
         <h3>Log time</h3>
         <label for="loggedTime">Log Time</label>
-        <input bind:value={loggedTime} id="loggedTime" name="loggedTime" placeholder="Format: 1h 5m 55s" type="time">
+        <input bind:value={loggedTime} id="loggedTime" name="loggedTime" placeholder="Format: 1h 5m 55s" type="text">
         <button type="submit">Log work done</button>
     </form>
 

@@ -82,7 +82,12 @@ router.patch("/api/projects/:id", async (req, res) => {
             {
                 $set: project
             })
-        res.status(200).send({data: "Successfully updated project"})
+        res.status(200).send({
+            data: {
+                message: "Successfully updated project",
+                project,
+            }
+        })
 
     } catch (error) {
         res.status(404).send({data: `${error}`})
@@ -93,10 +98,16 @@ router.patch("/api/projects/:id", async (req, res) => {
 router.delete("/api/projects/:id", async (req, res) => {
     const projectId = req.params.id
     let o_id = new ObjectId(projectId)
-    
+
     await db.comments.deleteMany({projectID: projectId})
     await db.projects.deleteOne({_id: o_id})
-    res.status(200).send({data: `${o_id} was successfully deleted`})
+
+    res.status(200).send({
+        data: {
+            id: o_id,
+            message: (`${o_id} was successfully deleted`),
+        }
+    })
 })
 
 

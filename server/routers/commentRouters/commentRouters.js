@@ -1,5 +1,6 @@
 import {Router} from "express"
 import db from "../../database/database.js";
+import {ObjectId} from "mongodb";
 
 const router = Router()
 
@@ -14,16 +15,33 @@ router.get("/api/comments/:projectID", async (req, res) => {
 
 router.post("/api/comments", async (req, res) => {
     const comment = req.body
+    comment.author = `${req.session.firstName} ${req.session.lastName}`
 
     try {
         await db.comments.insertOne(comment)
-        res.status(200).send({data: "Successfully added a comment"})
+        res.status(200).send({data: comment})
 
     } catch (error) {
         res.status(500).send({error})
     }
+})
 
+router.delete("/api/comments/:id", async (req, res) => {
+    const commentId = req.params.id
+    const o_id = new ObjectId(commentId)
 
+    try {
+        await db.comments.deleteOne({_id: o_id})
+        res.status(200).send({
+            data: {
+                id: o_id,
+                message: "Successfully deleted comment"
+            }
+        })
+
+    } catch (error) {
+        res.status(error.status).send({data: "Deletion failed"})
+    }
 })
 
 

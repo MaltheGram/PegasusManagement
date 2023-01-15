@@ -1,5 +1,6 @@
 <script>
     import {BASE_URL} from "../../stores/globals.js";
+    import {navigate} from "svelte-navigator";
     let firstName = ""
     let lastName = ""
     let email = ""
@@ -20,7 +21,8 @@
                     toastr["error"]("Signup failed. Please try again")
                 } else if (res.status) {
                     setTimeout(() => {
-                        location.href = "/projects"
+                        navigate("/projects")
+                        location.reload()
                     }, 2500)
                     toastr["success"]("Signup success! Redirecting to projects site...⌛️!")
                 }

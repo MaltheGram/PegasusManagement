@@ -1,6 +1,6 @@
 <script>
 
-    import {Link, Router} from "svelte-navigator"
+    import {Link, navigate, Router} from "svelte-navigator"
     import {BASE_URL} from "../stores/globals.js"
     import {onMount} from "svelte"
 
@@ -26,7 +26,7 @@
             credentials: "include"
         })
         setTimeout(() => {
-            location.reload()
+            navigate("/")
         }, 2000)
         toastr["info"](`Goodbye ${userName}...⌛️`)
     }

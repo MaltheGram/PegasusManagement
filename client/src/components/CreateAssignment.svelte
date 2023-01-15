@@ -1,5 +1,6 @@
 <script>
 
+    import {navigate} from "svelte-navigator";
     let name, description
 
     import {BASE_URL} from "../stores/globals.js";
@@ -16,7 +17,7 @@
                 if (res.status === 200) {
                     toastr["success"](`Success: ${name} was created`)
                     setTimeout(() => {
-                        location.href = "/projects"
+                        navigate("/projects")
                     }, 1200)
                 }
             })

@@ -40,7 +40,8 @@ router.delete("/api/comments/:id", async (req, res) => {
         })
 
     } catch (error) {
-        res.status(error.status).send({data: "Deletion failed"})
+        console.log(error)
+        res.status(500).send({data: "Deletion failed"})
     }
 })
 

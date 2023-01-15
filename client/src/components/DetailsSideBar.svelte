@@ -98,7 +98,7 @@
                 if (res.status === 200) {
                     toastr["success"](`${id} was successfully deleted. Redirecting... ⏳`)
                     setTimeout(() => {
-                        location.href = "/projects"
+                        href = "/projects"
                     }, 1200)
                 }
             })

@@ -33,6 +33,8 @@
             .then(res => res.json())
             .then(data => {
                 allComments = [...allComments, data.data]
+                commentTitle = ""
+                commentContent = ""
             })
     }
 

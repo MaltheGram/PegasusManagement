@@ -6,4 +6,3 @@
 
 <Navigation/>
 <RouteLogic/>
-<Chat/>

@@ -167,8 +167,6 @@
             </div>
         </Modal>
     {/if}
-
-    <Chat/>
 </div>
 
 

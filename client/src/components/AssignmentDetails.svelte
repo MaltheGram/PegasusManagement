@@ -75,6 +75,7 @@
             <h2>{assignmentName}</h2>
             <p>{assignmentDescription}</p>
         </div>
+        <Comments/>
     </div>
     <div class="vl"></div>
     <DetailsSideBar

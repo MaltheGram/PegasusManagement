@@ -1,20 +1,12 @@
 <script>
     import {BASE_URL} from "../stores/globals.js";
-    import io from "socket.io-client"
     import {onMount} from "svelte";
     import Modal from "./Modal.svelte"
+    import Chat from "./Chat.svelte";
 
-    // Socket
-    let socket
-    onMount(async () => {
-        socket = io($BASE_URL)
-        socket.on("connect", () => {
-            console.log("Connected side bar")
-        })
-    })
 
     // Declared props
-    let statusArray = ["Open", "Analysis", "Backlog", "In Progress", "Ready For Test", "Ready For Deploy"]
+    let statusArray = ["Open", "Analysis", "Backlog", "In Progress", "Ready For Test", "Ready For Deploy", "Closed"]
 
     // Props
     export let id
@@ -78,6 +70,9 @@
     }
 
     const logWork = async () => {
+        const stripped_time = loggedTime.split(":")
+
+
         await fetch(`${$BASE_URL}/api/projects/${id}`, {
             method: "PATCH",
             credentials: "include",
@@ -85,7 +80,7 @@
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                loggedTime: loggedTime
+                loggedTime: stripped_time
             })
         })
             .then(res => {
@@ -123,8 +118,7 @@
     <h1>Details</h1>
     <div>
         <p>Assigned user: {assignedUser}</p>
-        <p>Time spent: {spentTime}</p>
-
+        <p>Time spent: {spentTime[0]}h {spentTime[1]}m </p>
     </div>
     <form on:submit|preventDefault={changeStatus}>
         <h3>Current status: {assignmentStatus}</h3>
@@ -145,23 +139,6 @@
     </form>
 
 
-    <div class="deletion">
-        <h4>Delete assignment?</h4>
-        <button on:click={() => modal = true}>
-            <i class="fa fa-trash-o" style="font-size:48px;color:red"></i>
-        </button>
-    </div>
-
-    {#if modal}
-        <Modal>
-            <div class="modal">
-                <h3>Confirm deletion:</h3>
-                <button class="deletion__yes" on:click={deleteAssignment}>Yes</button>
-                <button class="deletion__no" on:click={() => modal = false}>No</button>
-            </div>
-        </Modal>
-    {/if}
-
     <div class="assignUser">
         <form on:submit|preventDefault={assignUser}>
             <h1>Assign user</h1>
@@ -173,6 +150,25 @@
             <button type="submit">Assign user</button>
         </form>
     </div>
+
+    <div class="deletion">
+        <h4>Delete assignment?</h4>
+        <button on:click={() => modal = true}>
+            <i class="fa fa-trash-o" style="font-size:48px;color:red"></i>
+        </button>
+    </div>
+
+    {#if modal}
+        <Modal on:close={() => modal = false}>
+            <div class="modal">
+                <h3>Confirm deletion:</h3>
+                <button class="deletion__yes" on:click={deleteAssignment}>Yes</button>
+                <button class="deletion__no" on:click={() => modal = false}>No</button>
+            </div>
+        </Modal>
+    {/if}
+
+    <Chat/>
 </div>
 
 
@@ -180,7 +176,6 @@
   .status-side-bar {
     flex-wrap: wrap;
     width: 30%;
-    background-color: orange;
     text-align: center;
 
     h3 {
@@ -190,7 +185,6 @@
 
     form {
       margin: 1em 0;
-      border: 2px solid teal;
 
       select,
       button,
@@ -211,7 +205,7 @@
         margin-top: 5px;
 
         &:hover {
-          background-color: darkorange;
+          background-color: lightgrey;
         }
       }
     }

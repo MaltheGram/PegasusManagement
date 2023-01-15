@@ -1,3 +1,21 @@
+<script>
+    import {createEventDispatcher} from "svelte"
+
+    const dispatch = createEventDispatcher()
+    const close = () => dispatch("close")
+
+
+    const handleKeyClose = (e) => {
+        if (e.key === "Escape") {
+            close()
+
+        }
+    }
+
+</script>
+
+
+<svelte:window on:keydown={handleKeyClose}/>
 <div class="modal-background"></div>
 
 <div class="modal">

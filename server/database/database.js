@@ -9,8 +9,10 @@ await client.connect()
 const pegasus = client.db("Pegasus")
 export const projects = pegasus.collection("projects")
 export const users = pegasus.collection("users")
+export const comments = pegasus.collection("comments")
 
 export default {
     projects,
-    users
+    users,
+    comments
 }

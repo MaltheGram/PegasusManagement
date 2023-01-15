@@ -3,29 +3,44 @@
     import {onMount} from "svelte";
     import io from "socket.io-client";
     import DetailsSideBar from "./DetailsSideBar.svelte";
+    import Comments from "./Comments.svelte";
 
     // Declared data (TODO: If time, provide this from the API)
     const notSpecified = "not specified"
 
     // Data from API
-    let id = "ID not given\nSomething went wrong ⛔️"
+    //export let id = "ID not given\nSomething went wrong ⛔️"
     let assignmentStatus = notSpecified
     let assignmentName = notSpecified
     let assignmentDescription = notSpecified
     let assignedUser = notSpecified
     let spentTime = notSpecified
+    let connectionCounter
+    let id = location.pathname.split("/")[2] || "Something went wrong ⛔"
 
 
-    let socket
-    onMount(async () => {
+    const handleSocket = () => {
+        let socket
         socket = io($BASE_URL)
         socket.on("connect", () => {
-            console.log("Connected to socket io server")
+            socket.on(`user connected`, data => {
+                connectionCounter = data
+                /*if (connectionCounter > 1) {
+                    toastr["warning"](`${connectionCounter} people is currently looking at this ticket`)
+                }
+
+                 */
+            })
         })
-    })
+        socket.on("disconnect", () => {
+            socket.on("user disconnected", data => {
+                connectionCounter = data
+            })
+        })
+    }
+
 
     const initialize = async () => {
-        id = location.pathname.split("/")[2]
         fetch(`${$BASE_URL}/api/projects/${id}`, {
             method: "GET",
             credentials: "include",
@@ -56,10 +71,12 @@
 <div class='flex-container'>
     <div class='wrapper'>
         <div class="content">
+            <!-- <h1>Connections: {connectionCounter}</h1> -->
             <h2>{assignmentName}</h2>
             <p>{assignmentDescription}</p>
         </div>
     </div>
+    <div class="vl"></div>
     <DetailsSideBar
             assignedUser={assignedUser}
             assignmentStatus={assignmentStatus}
@@ -79,8 +96,7 @@
     height: 100vh;
 
     .wrapper {
-      width: 70%;
-      background-color: red;
+      width: 65%;
 
       .content {
         margin: 0 5em;
@@ -91,6 +107,10 @@
 
         }
       }
+    }
+
+    .vl {
+      border-left: 6px solid green;
     }
   }
 

@@ -21,7 +21,6 @@
     "@sveltejs/adapter-node": "^1.0.0-next.101",
     "socket.io-client": "^4.5.4",
     "svelte-materialify": "^0.3.11",
-    "svelte-modal": "^0.4.0",
     "toastr": "^2.1.4"
   }
 }

@@ -59,21 +59,23 @@ router.get("/api/projects/:id", async (req, res) => {
 router.post("/api/projects", async (req, res) => {
     const project = req.body
     project.status = "Open"
+    project.loggedTime = ["00", "00"]
 
     try {
         await db.projects.insertOne(project)
         res.status(200).send({data: "Successfully added new project"})
 
     } catch (error) {
-        res.status(500)
+        res.status(500).send({error})
     }
 })
 
 router.patch("/api/projects/:id", async (req, res) => {
+    const projectToUpdate = req.params.id
+    let o_id = new ObjectId(projectToUpdate)
+
     try {
-        const projectToUpdate = req.params.id
         const project = req.body
-        let o_id = new ObjectId(projectToUpdate)
 
         await db.projects.updateOne(
             {_id: o_id},
@@ -85,15 +87,14 @@ router.patch("/api/projects/:id", async (req, res) => {
     } catch (error) {
         res.status(404).send({data: `${error}`})
     }
-
-
 })
 
 
 router.delete("/api/projects/:id", async (req, res) => {
     const projectId = req.params.id
     let o_id = new ObjectId(projectId)
-
+    
+    await db.comments.deleteMany({projectID: projectId})
     await db.projects.deleteOne({_id: o_id})
     res.status(200).send({data: `${o_id} was successfully deleted`})
 })

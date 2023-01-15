@@ -1,4 +1,5 @@
-import express from "express"
+import express, {request} from "express"
+import axios from "axios"
 const app = express()
 
 import cors from "cors"
@@ -11,7 +12,7 @@ import helmet from "helmet"
 app.use(helmet())
 
 import session from "express-session"
-app.use(session({
+const sessionMiddleware = session({
     secret: "123", // Should be stored in env
     resave: true,
     saveUninitialized: true,
@@ -20,7 +21,9 @@ app.use(session({
         secure: false,
         maxAge: 10000 * 60 * 60
     }
-}))
+})
+
+app.use(sessionMiddleware)
 
 app.use(express.urlencoded({extended: true}))
 app.use(express.json())
@@ -32,20 +35,43 @@ app.get("/", (req, res) => {
 
 import http from "http"
 import {Server} from "socket.io"
+import {instrument} from "@socket.io/admin-ui"
+
 const server = http.createServer(app)
 const io = new Server(server, {
     cors: {
-        origin: "http://localhost:5173",
+        origin: ["http://localhost:5173", "https://admin.socket.io"],
         credentials: true
     }
 })
 
-io.on("connection", socket => {
-    console.log("A user connected", socket.id)
+instrument(io, {auth: false})
+// let connectionCounter = 0
+// io.on("connection", socket => {
+//     connectionCounter++
+//     console.log("A user connected", socket.id)
+//     //setInterval(() => {
+//     socket.emit(`user connected`, connectionCounter)
+//     console.log(`Connections: ${connectionCounter}`)
+//     //}, 10000)
+//
+//     socket.on("disconnect", () => {
+//         connectionCounter--
+//         console.log("A user disconnected")
+//         socket.emit("user disconnected", connectionCounter)
+//         console.log(`Connections: ${connectionCounter}`)
+//     })
+// })
 
-
-    socket.on("disconnect", () => {
-        console.log("A user disconnected")
+io.on("connect", socket => {
+    //let session = socket.handshake.session
+    socket.on("new message", message => {
+        io.emit("new message", {
+            data: {
+                dataMessage: message,
+                timestamp: new Date().toLocaleTimeString("en-GB"),
+            }
+        })
     })
 })
 
@@ -61,10 +87,10 @@ app.use(sessionRouters)
 import projectRouters from "./routers/projectRouters/projectRouter.js";
 app.use(projectRouters)
 
+import commentRouters from "./routers/commentRouters/commentRouters.js";
+app.use(commentRouters)
+
 const PORT = process.env.PORT || 8080
 server.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
 })
-
-
-export default io

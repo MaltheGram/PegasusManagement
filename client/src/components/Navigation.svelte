@@ -7,7 +7,7 @@
     let loggedIn = false
     let userName = "Not logged in"
 
-    const userStatus = () => {
+    export const userStatus = () => {
         fetch(`${$BASE_URL}/api/session`, {
             method: "GET",
             credentials: "include"

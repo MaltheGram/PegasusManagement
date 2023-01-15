@@ -26,7 +26,7 @@
             credentials: "include"
         })
         setTimeout(() => {
-            navigate("/")
+            location.href = "/"
         }, 2000)
         toastr["info"](`Goodbye ${userName}...⌛️`)
     }

@@ -20,7 +20,7 @@
                 if (res.status === 200) {
                     toastr["success"]("Welcome!")
                     setTimeout(() => {
-                        navigate("/projects")
+                        location.href = "/"
                     }, 1200)
                 } else {
                     toastr["info"]("Login failed")

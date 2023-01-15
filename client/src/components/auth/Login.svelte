@@ -1,6 +1,7 @@
 <script>
-    import {Link, navigate} from "svelte-navigator"
+    import {Link} from "svelte-navigator"
     import {BASE_URL} from "../../stores/globals.js";
+
 
     let email = ""
     let password = ""
@@ -18,10 +19,12 @@
         })
             .then(res => {
                 if (res.status === 200) {
-                    toastr["success"]("Welcome!")
-                    setTimeout(() => {
+                    location.href = "/projects"
+                    //toastr["success"]("Welcome!")
+                    /*setTimeout(() => {
                         location.href = "/"
                     }, 1200)
+                     */
                 } else {
                     toastr["info"]("Login failed")
                 }

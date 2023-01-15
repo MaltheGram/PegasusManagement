@@ -1,8 +1,10 @@
 <script>
     import {BASE_URL} from "../stores/globals.js";
     import {onMount} from "svelte";
+    import getUserSession from "./DetailsSideBar.svelte"
     let commentTitle
     let commentContent
+    export let author
 
     let projectID = location.pathname.split("/")[2]
     let allComments = []
@@ -52,7 +54,6 @@
     onMount(
         getAllComments
     )
-
 </script>
 
 
@@ -76,12 +77,14 @@
                 <p>Content: {comment.commentContent}</p>
                 <p>Author: {comment.author}</p>
                 <p>Comment id: {comment._id}</p>
-                <div class="deletion">
-                    <h4>Delete comment?</h4>
-                    <button on:click={deleteComment(comment._id)}>
-                        <i class="fa fa-trash-o" style="font-size:48px;color:red"></i>
-                    </button>
-                </div>
+                {#if comment.author === author}
+                    <div class="deletion">
+                        <h4>Delete comment?</h4>
+                        <button on:click={deleteComment(comment._id)}>
+                            <i class="fa fa-trash-o" style="font-size:48px;color:red"></i>
+                        </button>
+                    </div>
+                {/if}
             </div>
 
         {/each}

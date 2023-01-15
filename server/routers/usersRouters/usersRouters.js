@@ -1,16 +1,17 @@
 import {Router} from "express"
 import db from "../../database/database.js";
+import {checkAdmin} from "../../middleware/auth/auth.js";
 
 const router = Router()
 
-router.get("/api/users", async (req, res) => {
+router.get("/api/users", checkAdmin, async (req, res) => {
 
     try {
         const users = await db.users.find().toArray()
         let usersArray = []
 
         users.forEach((user) => {
-            usersArray.push({fullName: `${user.firstName} ${user.lastName}`})
+            usersArray.push({fullName: `${user.firstName} ${user.lastName}`, role: user.role})
         })
 
         res.status(200).send({data: usersArray})

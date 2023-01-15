@@ -15,6 +15,7 @@
     export let assignedUser
     export let spentTime
 
+    export let userRole
     let users = []
     let user
     let modal = false
@@ -33,6 +34,20 @@
                 users = data.data
             })
     }
+    /*
+        const getUserSession = async () => {
+            await fetch(`${$BASE_URL}/api/session`, {
+                method: "GET",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+            })
+                .then(res => res.json())
+                .then(data => {
+                    userRole = data.data.role
+                })
+        }*/
 
     const changeStatus = async () => {
         await fetch(`${$BASE_URL}/api/projects/${id}`, {
@@ -98,7 +113,7 @@
                 if (res.status === 200) {
                     toastr["success"](`${id} was successfully deleted. Redirecting... ⏳`)
                     setTimeout(() => {
-                        href = "/projects"
+                        location.href = "/projects"
                     }, 1200)
                 }
             })
@@ -106,6 +121,7 @@
     onMount(
         getAllUserNames
     )
+    //getUserSession()
 </script>
 
 <div class='status-side-bar'>
@@ -145,21 +161,23 @@
         </form>
     </div>
 
-    <div class="deletion">
-        <h4>Delete assignment?</h4>
-        <button on:click={() => modal = true}>
-            <i class="fa fa-trash-o" style="font-size:48px;color:red"></i>
-        </button>
-    </div>
+    {#if userRole === "admin"}
+        <div class="deletion">
+            <h4>Delete assignment?</h4>
+            <button class on:click={() => modal = true}>
+                <i class="fa fa-trash-o" style="font-size:48px;color:red"></i>
+            </button>
+        </div>
 
-    {#if modal}
-        <Modal on:close={() => modal = false}>
-            <div class="modal">
-                <h3>Confirm deletion:</h3>
-                <button class="deletion__yes" on:click={deleteAssignment}>Yes</button>
-                <button class="deletion__no" on:click={() => modal = false}>No</button>
-            </div>
-        </Modal>
+        {#if modal}
+            <Modal on:close={() => modal = false}>
+                <div class="modal">
+                    <h3>Confirm deletion:</h3>
+                    <button class="deletion__yes" on:click={deleteAssignment}>Yes</button>
+                    <button class="deletion__no" on:click={() => modal = false}>No</button>
+                </div>
+            </Modal>
+        {/if}
     {/if}
 </div>
 
@@ -235,7 +253,6 @@
           transform: scale(1.10);
         }
       }
-
     }
   }
 

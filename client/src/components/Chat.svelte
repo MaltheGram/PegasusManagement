@@ -15,48 +15,34 @@
     }
     socket.on("new message", data => {
         messages = [...messages, data.data]
-        console.log(messages)
     })
-
-    /*   socket.on("connect", () => {
-           console.log("A user entered the chat")
-           socket.on("return message", data => {
-               messages = data
-           })
-       })
-       socket.on("disconnect", () => {
-           console.log("A user disconnected the chat")
-       })
-       const sendMessage = () => {
-           socket.emit("new message", message)
-           //messages = [...messages, message]
-           console.log(messages)
-       }
-     */
 
 
 </script>
 
+<div class="container">
+    <form on:submit|preventDefault>
+        <label for="message">Message</label>
+        <textarea bind:value={message} id="message" name="message" rows="5"></textarea>
 
-<label for="message">Message</label>
-<input bind:value={message} id="message" name="message" type="text">
+        <button on:click={sendMessage} type="submit">Send message</button>
+    </form>
+    <div class="chatbox">
+        <ul>
+            {#each messages as msg}
+                <li>{msg.dataMessage}
+                    Time: {msg.timestamp}</li>
 
-<button on:click={sendMessage} type="submit">Send message</button>
-
-<div class="chatbox">
-    <ul>
-        {#each messages as msg}
-            <li>{msg.dataMessage}
-                Time: {msg.timestamp}</li>
-
-        {/each}
-    </ul>
+            {/each}
+        </ul>
+    </div>
 </div>
 
 <style lang="scss">
-  .chatbox {
-    width: 50%;
+  @import "../styles/forms.css";
 
+  .chatbox {
+    width: 100%;
 
     li {
       background-color: #cccccc;
@@ -66,6 +52,8 @@
       margin-bottom: 5px;
       max-width: 100%;
       word-break: break-word;
+
+      list-style: none;
 
       &:nth-child(even) {
         background-color: grey;

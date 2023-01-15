@@ -10,7 +10,6 @@
     <h2>{title}</h2>
     {#each array as value}
         <div class="description" draggable="false">
-            <!--TODO: Make it draggable, on drag redifine status -->
             <p><span>Status:</span> {value.status}</p>
             <p><span>Name:</span> {value.name}</p>
             <p><span>ID:</span> {value._id}</p>
@@ -53,12 +52,11 @@
       text-decoration: none;
       color: inherit;
       padding: 0.25em 1em;
-      background-color: green;
-      border-radius: 15%;
+      background-color: darkgrey;
+      border-radius: 10px;
 
       &:hover {
         text-decoration: underline;
-        color: blue;
       }
     }
   }

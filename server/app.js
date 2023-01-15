@@ -63,17 +63,6 @@ instrument(io, {auth: false})
 //     })
 // })
 
-io.on("connect", socket => {
-    //let session = socket.handshake.session
-    socket.on("new message", message => {
-        io.emit("new message", {
-            data: {
-                dataMessage: message,
-                timestamp: new Date().toLocaleTimeString("en-GB"),
-            }
-        })
-    })
-})
 
 import authRouter from "./routers/authRouters/authRouter.js";
 app.use(authRouter)

@@ -1,10 +1,11 @@
 import {Router} from "express"
 import db from "../../database/database.js";
 import {ObjectId} from "mongodb";
+import {checkAdmin} from "../../middleware/auth/auth.js";
 const router = Router()
 
 
-router.get("/api/projects", async (req, res) => {
+router.get("/api/projects", checkAdmin, async (req, res) => {
     const findAllProjects = await db.projects.find().toArray()
     const openStatusArray = await db.projects.find({status: "Open"}).toArray()
     const analysisStatusArray = await db.projects.find({status: "Analysis"}).toArray()
@@ -49,7 +50,7 @@ router.get("/api/projects/insertdummy", async (req, res) => {
 /*                                      Dummy stuff for testing purpose                                              */
 /*__________________________________________________________________________________________________________________ */
 
-router.get("/api/projects/:id", async (req, res) => {
+router.get("/api/projects/:id", checkAdmin, async (req, res) => {
     const id = req.params.id
     let o_id = new ObjectId(id)
     const assignmentData = await db.projects.find({_id: o_id}).toArray()

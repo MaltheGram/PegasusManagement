@@ -5,11 +5,9 @@
     import DetailsSideBar from "./DetailsSideBar.svelte";
     import Comments from "./Comments.svelte";
 
-    // Declared data (TODO: If time, provide this from the API)
     const notSpecified = "not specified"
 
     // Data from API
-    //export let id = "ID not given\nSomething went wrong ⛔️"
     let assignmentStatus = notSpecified
     let assignmentName = notSpecified
     let assignmentDescription = notSpecified
@@ -17,6 +15,8 @@
     let spentTime = notSpecified
     let connectionCounter
     let id = location.pathname.split("/")[2] || "Something went wrong ⛔"
+    let userRole
+    let author
 
 
     const handleSocket = () => {
@@ -60,11 +60,27 @@
 
             })
     }
+    const getUserSession = async () => {
+        await fetch(`${$BASE_URL}/api/session`, {
+            method: "GET",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json"
+            },
+        })
+            .then(res => res.json())
+            .then(data => {
+                userRole = data.data.role
+                author = `${data.data.firstName} ${data.data.lastName}`
+            })
+    }
 
 
     onMount(async () => {
         await initialize()
+        await getUserSession()
     })
+
 
 </script>
 
@@ -75,7 +91,8 @@
             <h2>{assignmentName}</h2>
             <p>{assignmentDescription}</p>
         </div>
-        <Comments/>
+        <Comments
+                author={author}/>
     </div>
     <div class="vl"></div>
     <DetailsSideBar
@@ -83,9 +100,7 @@
             assignmentStatus={assignmentStatus}
             id={id}
             spentTime={spentTime}
-
-
-    />
+            userRole={userRole}/>
 </div>
 
 
@@ -111,7 +126,7 @@
     }
 
     .vl {
-      border-left: 6px solid green;
+      border-left: 6px solid darkgrey;
     }
   }
 

@@ -64,7 +64,7 @@
 <div class='flex-container'>
     <div class='wrapper'>
         <div class="content">
-            <h2>{assignmentName}</h2>
+            <h2>Title: {assignmentName}</h2>
             <p>{assignmentDescription}</p>
         </div>
         <Comments

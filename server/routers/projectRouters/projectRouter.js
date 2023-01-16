@@ -1,12 +1,10 @@
 import {Router} from "express"
 import db from "../../database/database.js";
 import {ObjectId} from "mongodb";
-import {checkAuth} from "../../middleware/auth/auth.js";
 const router = Router()
 
 
 router.get("/api/projects", async (req, res) => {
-    const findAllProjects = await db.projects.find().toArray()
     const openStatusArray = await db.projects.find({status: "Open"}).toArray()
     const analysisStatusArray = await db.projects.find({status: "Analysis"}).toArray()
     const backlogStatusArray = await db.projects.find({status: "Backlog"}).toArray()
@@ -15,43 +13,22 @@ router.get("/api/projects", async (req, res) => {
     const readyForDeployStatusArray = await db.projects.find({status: "Ready For Deploy"}).toArray()
     const closedStatusArray = await db.projects.find({status: "Closed"}).toArray()
 
-    if (req.query.delete) {
-        await db.projects.deleteMany({name: req.query.delete})
-        findAllProjects.length === 1
-            ? res.send({data: `Deleted 0 projects`})
-            : res.send({data: `Deleted ${findAllProjects.length} projects`})
-    } else {
-        res.send(
-            {
-                length: `${findAllProjects.length} Projects`, data: [
-                    {
-                        openStatusArray,
-                        analysisStatusArray,
-                        backlogStatusArray,
-                        inProgressArray,
-                        readyForTestStatusArray,
-                        readyForDeployStatusArray,
-                        closedStatusArray
-                    }
-                ]
-            }
-        )
-    }
+    res.send(
+        {
+            data: [
+                {
+                    openStatusArray,
+                    analysisStatusArray,
+                    backlogStatusArray,
+                    inProgressArray,
+                    readyForTestStatusArray,
+                    readyForDeployStatusArray,
+                    closedStatusArray
+                }
+            ]
+        }
+    )
 })
-router.get("/api/projects/insertdummy", async (req, res) => {
-    await db.projects.insertMany([
-        {name: "Pegasus", status: "open"},
-        {name: "Pegasus", status: "analysis"},
-        {name: "Pegasus", status: "backlog"},
-        {name: "Pegasus", status: "in progress"},
-        {name: "Pegasus", status: "ready for test"},
-        {name: "Pegasus", status: "ready for deploy"}
-    ])
-    res.send({data: "inserted dummy data"})
-})
-/*                                      Dummy stuff for testing purpose                                              */
-/*__________________________________________________________________________________________________________________ */
-
 router.get("/api/projects/:id", async (req, res) => {
     const id = req.params.id
     let o_id = new ObjectId(id)

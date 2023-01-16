@@ -201,7 +201,7 @@
         margin-top: 5px;
 
         &:hover {
-          background-color: lightgrey;
+          background-color: rgba(206, 197, 197, 0.15);
         }
       }
 

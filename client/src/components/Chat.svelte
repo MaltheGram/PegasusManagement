@@ -4,7 +4,6 @@
     import {BASE_URL} from "../stores/globals.js";
     let messages = []
     let message
-    let now = new Date().toLocaleString("en-GB")
 
     let socket
     socket = io($BASE_URL)
@@ -28,13 +27,15 @@
         <button on:click={sendMessage} type="submit">Send message</button>
     </form>
     <div class="chatbox">
-        <ul>
-            {#each messages as msg}
-                <li>{msg.dataMessage}
-                    Time: {msg.timestamp}</li>
 
-            {/each}
-        </ul>
+        {#each messages as msg}
+            <div>
+                <p>{msg.dataMessage}</p>
+                <p>{msg.timestamp}</p>
+            </div>
+
+        {/each}
+
     </div>
 </div>
 
@@ -44,7 +45,7 @@
   .chatbox {
     width: 100%;
 
-    li {
+    div {
       background-color: #cccccc;
       padding: 2.25em;
       border-radius: 5px;

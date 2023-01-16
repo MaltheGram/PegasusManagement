@@ -1,12 +1,12 @@
 import {Router} from "express"
 import db from "../../database/database.js";
 import {ObjectId} from "mongodb";
-import {checkAdmin} from "../../middleware/auth/auth.js";
+import {checkAuth} from "../../middleware/auth/auth.js";
 
 const router = Router()
 
 
-router.get("/api/comments/:projectID", checkAdmin, async (req, res) => {
+router.get("/api/comments/:projectID", async (req, res) => {
     const projectID = req.params.projectID
 
     const comments = await db.comments.find({projectID: projectID}).toArray()

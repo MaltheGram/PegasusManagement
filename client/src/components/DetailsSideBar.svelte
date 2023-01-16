@@ -34,21 +34,6 @@
                 users = data.data
             })
     }
-    /*
-        const getUserSession = async () => {
-            await fetch(`${$BASE_URL}/api/session`, {
-                method: "GET",
-                credentials: "include",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-            })
-                .then(res => res.json())
-                .then(data => {
-                    userRole = data.data.role
-                })
-        }*/
-
     const changeStatus = async () => {
         await fetch(`${$BASE_URL}/api/projects/${id}`, {
             method: "PATCH",
@@ -121,7 +106,6 @@
     onMount(
         getAllUserNames
     )
-    //getUserSession()
 </script>
 
 <div class='status-side-bar'>
@@ -130,45 +114,47 @@
         <p>Assigned user: {assignedUser}</p>
         <p>Time spent: {spentTime} </p>
     </div>
-    <form on:submit|preventDefault={changeStatus}>
-        <h3>Current status: {assignmentStatus}</h3>
-        <label for="statusOptions">Change Status</label>
-        <select bind:value={selectedStatus} id="statusOptions" name="statusOptions">
-            {#each statusArray as option}
-                <option value="{option}">{option}</option>
-            {/each}
-        </select>
-        <button type="submit">Change project status</button>
-    </form>
-
-    <form on:submit|preventDefault={logWork}>
-        <h3>Log time</h3>
-        <label for="loggedTime">Log Time</label>
-        <input bind:value={loggedTime} id="loggedTime" name="loggedTime" placeholder="Format: 1h 5m 55s" type="text">
-        <button type="submit">Log work done</button>
-    </form>
-
-
-    <div class="assignUser">
-        <form on:submit|preventDefault={assignUser}>
-            <h1>Assign user</h1>
-            <select bind:value={user} id="assignUser" name="assignUser">
-                {#each users as user}
-                    <option value="{user.fullName}">{user.fullName}</option>
+    {#if userRole}
+        <form on:submit|preventDefault={changeStatus}>
+            <h3>Current status: {assignmentStatus}</h3>
+            <label for="statusOptions">Change Status</label>
+            <select bind:value={selectedStatus} id="statusOptions" name="statusOptions">
+                {#each statusArray as option}
+                    <option value="{option}">{option}</option>
                 {/each}
             </select>
-            <button type="submit">Assign user</button>
+            <button type="submit">Change project status</button>
         </form>
-    </div>
 
-    {#if userRole === "admin"}
-        <div class="deletion">
-            <h4>Delete assignment?</h4>
-            <button class on:click={() => modal = true}>
-                <i class="fa fa-trash-o" style="font-size:48px;color:red"></i>
-            </button>
+        <form on:submit|preventDefault={logWork}>
+            <h3>Log time</h3>
+            <label for="loggedTime">Log Time</label>
+            <input bind:value={loggedTime} id="loggedTime" name="loggedTime" placeholder="Format: 1h 5m 55s"
+                   type="text">
+            <button type="submit">Log work done</button>
+        </form>
+
+
+        <div class="assignUser">
+            <form on:submit|preventDefault={assignUser}>
+                <h1>Assign user</h1>
+                <select bind:value={user} id="assignUser" name="assignUser">
+                    {#each users as user}
+                        <option value="{user.fullName}">{user.fullName}</option>
+                    {/each}
+                </select>
+                <button type="submit">Assign user</button>
+            </form>
         </div>
 
+        {#if userRole === "admin"}
+            <div class="deletion">
+                <h4>Delete assignment?</h4>
+                <button class on:click={() => modal = true}>
+                    <i class="fa fa-trash-o" style="font-size:48px;color:red"></i>
+                </button>
+            </div>
+        {/if}
         {#if modal}
             <Modal on:close={() => modal = false}>
                 <div class="modal">

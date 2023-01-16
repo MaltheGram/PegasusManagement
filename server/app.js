@@ -1,6 +1,8 @@
-import express, {request} from "express"
-import axios from "axios"
+import express from "express"
 const app = express()
+
+import dotenv from "dotenv/config"
+
 
 import cors from "cors"
 app.use(cors({
@@ -13,11 +15,11 @@ app.use(helmet())
 
 import session from "express-session"
 const sessionMiddleware = session({
-    secret: "123", // Should be stored in env
+    secret: process.env.APP_SECRET,
     resave: true,
     saveUninitialized: true,
     cookie: {
-        name: "pegasus-cookie",
+        name: process.env.APP_COOKIE,
         secure: false,
         maxAge: 10000 * 60 * 60
     }
@@ -44,24 +46,36 @@ const io = new Server(server, {
         credentials: true
     }
 })
+io.on("connect", socket => {
+    //let session = socket.handshake.session
+    socket.on("new message", message => {
+        io.emit("new message", {
+            data: {
+                dataMessage: message,
+                timestamp: new Date().toLocaleTimeString("en-GB"),
+            }
+        })
+    })
+})
 
 instrument(io, {auth: false})
-// let connectionCounter = 0
-// io.on("connection", socket => {
-//     connectionCounter++
-//     console.log("A user connected", socket.id)
-//     //setInterval(() => {
-//     socket.emit(`user connected`, connectionCounter)
-//     console.log(`Connections: ${connectionCounter}`)
-//     //}, 10000)
-//
-//     socket.on("disconnect", () => {
-//         connectionCounter--
-//         console.log("A user disconnected")
-//         socket.emit("user disconnected", connectionCounter)
-//         console.log(`Connections: ${connectionCounter}`)
-//     })
-// })
+let connectionCounter = 0
+io.on("connection", socket => {
+    connectionCounter++
+    console.log("A user connected", socket.id)
+    console.log(`Connections: ${connectionCounter}`)
+    //socket.emit(`user connected`, connectionCounter)
+    socket.on("projectID", data => {
+        console.log(data)
+    })
+
+    socket.on("disconnect", () => {
+        connectionCounter--
+        console.log("A user disconnected")
+        socket.emit("user disconnected", connectionCounter)
+        console.log(`Connections: ${connectionCounter}`)
+    })
+})
 
 
 import authRouter from "./routers/authRouters/authRouter.js";

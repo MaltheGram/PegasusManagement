@@ -41,7 +41,6 @@
         <nav>
             <Link class="link" to="/">Home</Link>
             <Link class="link" to="/projects">Projects</Link>
-            <!-- <Link class="link user" to="">Welcome {userName}</Link> -->
             <Link class="link" to="/create">Create new</Link>
             <Link class="link" on:click={logOut} to="/">Logout</Link>
         </nav>

@@ -23,14 +23,15 @@
         let socket
         socket = io($BASE_URL)
         socket.on("connect", () => {
-            socket.on(`user connected`, data => {
+            socket.emit("projectID", id => {
+
+            })
+            /*socket.on(`user connected`, data => {
                 connectionCounter = data
-                /*if (connectionCounter > 1) {
+                if (connectionCounter > 1) {
                     toastr["warning"](`${connectionCounter} people is currently looking at this ticket`)
                 }
-
-                 */
-            })
+            })*/
         })
         socket.on("disconnect", () => {
             socket.on("user disconnected", data => {
@@ -56,8 +57,6 @@
                 assignmentDescription = context?.description || `Description ${notSpecified}`
                 assignedUser = context?.assignedUser || `Assigned user is ${notSpecified}`
                 spentTime = context?.loggedTime || `Logged time is ${notSpecified}`
-
-
             })
     }
     const getUserSession = async () => {
@@ -79,6 +78,7 @@
     onMount(async () => {
         await initialize()
         await getUserSession()
+        handleSocket()
     })
 
 
@@ -87,12 +87,12 @@
 <div class='flex-container'>
     <div class='wrapper'>
         <div class="content">
-            <!-- <h1>Connections: {connectionCounter}</h1> -->
             <h2>{assignmentName}</h2>
             <p>{assignmentDescription}</p>
         </div>
         <Comments
-                author={author}/>
+                author={author}
+                userRole={userRole}/>
     </div>
     <div class="vl"></div>
     <DetailsSideBar

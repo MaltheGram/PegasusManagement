@@ -1,10 +1,10 @@
 import {Router} from "express"
 import db from "../../database/database.js";
-import {checkAdmin} from "../../middleware/auth/auth.js";
+import {checkAuth} from "../../middleware/auth/auth.js";
 
 const router = Router()
 
-router.get("/api/users", checkAdmin, async (req, res) => {
+router.get("/api/users", checkAuth, async (req, res) => {
 
     try {
         const users = await db.users.find().toArray()

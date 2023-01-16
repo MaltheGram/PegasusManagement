@@ -1,10 +1,10 @@
 <script>
     import {BASE_URL} from "../stores/globals.js";
     import {onMount} from "svelte";
-    import getUserSession from "./DetailsSideBar.svelte"
     let commentTitle
     let commentContent
     export let author
+    export let userRole
 
     let projectID = location.pathname.split("/")[2]
     let allComments = []
@@ -66,7 +66,9 @@
             <label for="comment">Comment</label>
             <textarea bind:value={commentContent} cols="30" id="comment" name="comment" required rows="5"></textarea>
 
-            <button type="submit">Submit comment</button>
+            {#if userRole}
+                <button type="submit">Submit comment</button>
+            {/if}
         </form>
     </div>
 
@@ -77,7 +79,7 @@
                 <p>Content: {comment.commentContent}</p>
                 <p>Author: {comment.author}</p>
                 <p>Comment id: {comment._id}</p>
-                {#if comment.author === author}
+                {#if comment.author === author || userRole === "admin"}
                     <div class="deletion">
                         <h4>Delete comment?</h4>
                         <button on:click={deleteComment(comment._id)}>

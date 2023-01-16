@@ -1,9 +1,9 @@
 <script>
 
     import {navigate} from "svelte-navigator";
+    import {BASE_URL} from "../stores/globals.js";
     let name, description
 
-    import {BASE_URL} from "../stores/globals.js";
     const createAssignment = async () => {
         await fetch(`${$BASE_URL}/api/projects`, {
             method: "POST",
@@ -13,7 +13,7 @@
             },
             body: JSON.stringify({name, description})
         })
-            .then((res) => {
+            .then(res => {
                 if (res.status === 200) {
                     toastr["success"](`Success: ${name} was created`)
                     setTimeout(() => {

@@ -5,7 +5,6 @@
 
     let email = ""
     let password = ""
-    let statusCode
 
 
     const login = async () => {
@@ -20,11 +19,6 @@
             .then(res => {
                 if (res.status === 200) {
                     location.href = "/projects"
-                    //toastr["success"]("Welcome!")
-                    /*setTimeout(() => {
-                        location.href = "/"
-                    }, 1200)
-                     */
                 } else {
                     toastr["info"]("Login failed")
                 }

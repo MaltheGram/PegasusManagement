@@ -39,7 +39,7 @@ router.get("/api/projects/:id", async (req, res) => {
 router.post("/api/projects", async (req, res) => {
     const project = req.body
     project.status = "Open"
-    project.loggedTime = ["00", "00"]
+    project.loggedTime = "00h 00m"
 
     try {
         await db.projects.insertOne(project)

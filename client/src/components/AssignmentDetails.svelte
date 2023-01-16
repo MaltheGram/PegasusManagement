@@ -13,10 +13,10 @@
     let assignmentDescription = notSpecified
     let assignedUser = notSpecified
     let spentTime = notSpecified
-    let connectionCounter
-    let id = location.pathname.split("/")[2] || "Something went wrong ⛔"
     let userRole
     let author
+
+    let id = location.pathname.split("/")[2] || "Something went wrong ⛔"
 
 
     const initialize = async () => {
@@ -28,7 +28,7 @@
             }
         })
             .then(res => res.json())
-            .then((data) => {
+            .then(data => {
                 const context = data.data[0]
                 assignmentStatus = context?.status || `Status ${notSpecified}`
                 assignmentName = context?.name || `Name ${notSpecified}`

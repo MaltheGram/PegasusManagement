@@ -6,7 +6,7 @@
 
 
     const handleKeyClose = (e) => {
-        if (e.key === "Escape") {
+        if (e.key === "q") {
             close()
 
         }

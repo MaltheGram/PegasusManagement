@@ -16,7 +16,7 @@
             .then((data) => {
                 if (data.data.isLoggedIn) {
                     loggedIn = true
-                    userName = data.data.firstName + " " + data.data.lastName
+                    userName = `${data.data.firstName} ${data.data.lastName}`
                 }
             })
     }

@@ -21,7 +21,7 @@
                     toastr["error"]("Signup failed. Please try again")
                 } else if (res.status) {
                     setTimeout(() => {
-                        location.href = "/"
+                        location.href = "/projects"
                     }, 2500)
                     toastr["success"]("Signup success! Redirecting to projects site...⌛️!")
                 }

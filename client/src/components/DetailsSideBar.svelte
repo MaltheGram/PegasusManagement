@@ -137,7 +137,7 @@
 
         <div class="assignUser">
             <form on:submit|preventDefault={assignUser}>
-                <h1>Assign user</h1>
+                <h3>Assign user</h3>
                 <select bind:value={user} id="assignUser" name="assignUser">
                     {#each users as user}
                         <option value="{user.fullName}">{user.fullName}</option>

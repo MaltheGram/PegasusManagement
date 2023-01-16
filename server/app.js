@@ -58,7 +58,6 @@ io.on("connect", socket => {
 })
 
 instrument(io, {auth: false})
-let connectionCounter = 0
 
 import authRouter from "./routers/authRouters/authRouter.js";
 app.use(authRouter)

@@ -22,7 +22,6 @@
         <CreateAssignment/>
     </Route>
     <Route path="/login">
-        <h1>Login page WIP</h1>
         <Login/>
     </Route>
     <Route path="/signup">

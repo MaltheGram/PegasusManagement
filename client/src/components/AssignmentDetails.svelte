@@ -19,28 +19,6 @@
     let author
 
 
-    const handleSocket = () => {
-        let socket
-        socket = io($BASE_URL)
-        socket.on("connect", () => {
-            socket.emit("projectID", id => {
-
-            })
-            /*socket.on(`user connected`, data => {
-                connectionCounter = data
-                if (connectionCounter > 1) {
-                    toastr["warning"](`${connectionCounter} people is currently looking at this ticket`)
-                }
-            })*/
-        })
-        socket.on("disconnect", () => {
-            socket.on("user disconnected", data => {
-                connectionCounter = data
-            })
-        })
-    }
-
-
     const initialize = async () => {
         fetch(`${$BASE_URL}/api/projects/${id}`, {
             method: "GET",
@@ -78,7 +56,6 @@
     onMount(async () => {
         await initialize()
         await getUserSession()
-        handleSocket()
     })
 
 

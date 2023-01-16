@@ -47,7 +47,6 @@ const io = new Server(server, {
     }
 })
 io.on("connect", socket => {
-    //let session = socket.handshake.session
     socket.on("new message", message => {
         io.emit("new message", {
             data: {
@@ -60,23 +59,6 @@ io.on("connect", socket => {
 
 instrument(io, {auth: false})
 let connectionCounter = 0
-io.on("connection", socket => {
-    connectionCounter++
-    console.log("A user connected", socket.id)
-    console.log(`Connections: ${connectionCounter}`)
-    //socket.emit(`user connected`, connectionCounter)
-    socket.on("projectID", data => {
-        console.log(data)
-    })
-
-    socket.on("disconnect", () => {
-        connectionCounter--
-        console.log("A user disconnected")
-        socket.emit("user disconnected", connectionCounter)
-        console.log(`Connections: ${connectionCounter}`)
-    })
-})
-
 
 import authRouter from "./routers/authRouters/authRouter.js";
 app.use(authRouter)

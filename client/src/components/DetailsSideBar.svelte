@@ -204,6 +204,10 @@
           background-color: lightgrey;
         }
       }
+
+      button {
+        background-color: lightgrey;
+      }
     }
 
     .deletion {
